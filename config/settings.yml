@@ -1,0 +1,22 @@
+plugins:
+  brightcove_enabled:
+    default: true
+    client: true
+  brightcove_account_id:
+    default: ""
+  brightcove_client_id:
+    default: ""
+  brightcove_client_secret:
+    default: ""
+    secret: true
+  brightcove_application_id:
+    default: "Discourse"
+    client: true
+  brightcove_folder_id:
+    default: ""
+  brightcove_player:
+    default: "default"
+    client: true
+  brightcove_embed:
+    default: "default"
+    client: true

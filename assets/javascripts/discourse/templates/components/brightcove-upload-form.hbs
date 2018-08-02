@@ -1,0 +1,13 @@
+{{#d-modal-body
+  title="brightcove.modal_title"
+  subtitle="brightcove.modal_subtitle"
+  class="brightcove-upload-modal"
+  }}
+  <label class="btn" disabled={{uploading}} title="{{i18n "upload"}}">
+    {{d-icon "film"}}&nbsp;{{i18n "upload"}}
+    <input disabled={{uploading}} type="file" style="visibility: hidden; position: absolute;" />
+    </label>
+    {{#if uploading}}
+    <span>{{i18n 'upload_selector.uploading'}} {{uploadProgress}}%</span>
+    {{/if}}
+{{/d-modal-body}}
