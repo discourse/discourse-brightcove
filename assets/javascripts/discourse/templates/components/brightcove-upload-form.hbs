@@ -3,11 +3,23 @@
   subtitle="brightcove.modal_subtitle"
   class="brightcove-upload-modal"
   }}
-  <label class="btn" disabled={{uploading}} title="{{i18n "upload"}}">
-    {{d-icon "film"}}&nbsp;{{i18n "upload"}}
-    <input disabled={{uploading}} type="file" style="visibility: hidden; position: absolute;" onchange={{action "fileChanged"}} />
-    </label>
+
+    <h3>{{i18n "brightcove.file"}}</h3>
+    <p>
+      {{#if file}}{{fileName}} ({{fileSize}}){{/if}}
+      <label class="btn" disabled={{uploading}} title="{{i18n "brightcove.select_file"}}">
+      {{d-icon "film"}}&nbsp;{{i18n "brightcove.select_file"}}
+      <input disabled={{uploading}} type="file" style="visibility: hidden; position: absolute;" onchange={{action "fileChanged"}} />
+      </label>
+    </p>
+    <h3>{{i18n "brightcove.title"}}</h3>
+    <p>
+    {{input value=videoName disabled=uploading}}
+    </p>
     {{#if uploading}}
-    <span>{{i18n 'upload_selector.uploading'}} {{uploadProgress}}%</span>
+      {{uploadProgress}}
+    {{else}}
+      {{d-button action="upload" icon="upload" label="upload" disabled=uploadDisabled}}    
     {{/if}}
+
 {{/d-modal-body}}

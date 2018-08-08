@@ -4,3 +4,13 @@ en:
       upload_title: "Upload a video to Brightcove"
       modal_title: "Brightcove Upload"
       modal_subtitle: "Upload a video to Brightcove, and embed in this Discourse post"
+      select_file: "Select File"
+      file: "File"
+      title: "Video Title"
+      upload_progress:
+        error: "An error has occurred"
+        preparing: "Preparing to upload"
+        starting: "Starting upload"
+        uploading: "Uploading... {{progress}}%"
+        finishing: "Finishing upload"
+        complete: "Upload complete {{info}}"

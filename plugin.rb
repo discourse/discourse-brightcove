@@ -7,8 +7,7 @@
 enabled_site_setting :brightcove_enabled
 register_asset "stylesheets/brightcove.scss"
 register_asset "vendor/evaporate.js"
-# register_asset "vendor/crypto.js"
-# register_asset "vendor/crypto-browserify.js"
+register_asset "vendor/aws-sdk.js"
 
 require_relative 'lib/brightcove/api'
 require_relative 'lib/brightcove/video'
@@ -17,9 +16,7 @@ after_initialize do
 
   register_html_builder('server:before-head-close') do |ctx|
     break unless SiteSetting.brightcove_enabled
-    "<script src='https://players.brightcove.net/#{SiteSetting.brightcove_account_id}/#{SiteSetting.brightcove_player}_#{SiteSetting.brightcove_embed}/index.min.js'></script>
-    <script language='javascript' type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.22.0/aws-sdk.min.js'></script>
-    "
+    "<script src='https://players.brightcove.net/#{SiteSetting.brightcove_account_id}/#{SiteSetting.brightcove_player}_#{SiteSetting.brightcove_embed}/index.min.js'></script>"
   end
 end
 module ::Brightcove

@@ -24,7 +24,6 @@ function initializeBrightcove(api) {
       icon: "film",
       title: "brightcove.upload_title",
       perform: e => {
-        console.log("Showing modal");
         showModal("brightcove-upload-modal").setProperties({
           toolbarEvent: e
         });
