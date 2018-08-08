@@ -5,7 +5,7 @@
   }}
   <label class="btn" disabled={{uploading}} title="{{i18n "upload"}}">
     {{d-icon "film"}}&nbsp;{{i18n "upload"}}
-    <input disabled={{uploading}} type="file" style="visibility: hidden; position: absolute;" />
+    <input disabled={{uploading}} type="file" style="visibility: hidden; position: absolute;" onchange={{action "fileChanged"}} />
     </label>
     {{#if uploading}}
     <span>{{i18n 'upload_selector.uploading'}} {{uploadProgress}}%</span>

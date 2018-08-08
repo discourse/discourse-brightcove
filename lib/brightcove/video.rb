@@ -1,5 +1,7 @@
 module Brightcove
   class Video
+    attr_accessor :id
+
     def initialize(id)
       @id = id
     end
@@ -12,8 +14,12 @@ module Brightcove
       API.cms_request(:put, "folders/#{folder_id}/videos/#{@id}")
     end
 
-    def get_ingest_url
-      API.ingest_request(:get, "videos/#{@id}/upload-urls/testfilename.mp4")
+    def get_ingest_url(filename)
+      API.ingest_request(:get, "videos/#{@id}/upload-urls/#{filename}")
+    end
+
+    def request_ingest(url)
+      API.ingest_request(:post, "videos/#{@id}/ingest-requests", master: { url: url })
     end
 
     def self.create(name)
