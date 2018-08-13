@@ -7,7 +7,7 @@
 enabled_site_setting :brightcove_enabled
 register_asset "stylesheets/brightcove.scss"
 register_asset "vendor/evaporate.js"
-register_asset "vendor/aws-sdk.js"
+register_asset "vendor/spark-md5.js"
 
 require_relative 'lib/brightcove/api'
 require_relative 'lib/brightcove/video'

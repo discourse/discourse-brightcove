@@ -15,7 +15,7 @@ module Brightcove
     end
 
     def get_ingest_url(filename)
-      API.ingest_request(:get, "videos/#{@id}/upload-urls/#{filename}")
+      API.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{filename}")
     end
 
     def request_ingest(url)
