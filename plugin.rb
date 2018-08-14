@@ -18,9 +18,44 @@ after_initialize do
     break unless SiteSetting.brightcove_enabled
     "<script src='https://players.brightcove.net/#{SiteSetting.brightcove_account_id}/#{SiteSetting.brightcove_player}_#{SiteSetting.brightcove_embed}/index.min.js'></script>"
   end
+
+  register_post_custom_field_type('brightcove_video', :string)
+
+  topic_view_post_custom_fields_whitelister do |user|
+    Brightcove::POST_CUSTOM_FIELD_NAME
+  end
+
+  add_to_serializer(:post, :brightcove_videos, false) do
+    Array(post_custom_fields[Brightcove::POST_CUSTOM_FIELD_NAME])
+  end
+
+  on(:post_process_cooked) do |doc, post|
+    video_ids = []
+    doc.css("div/@data-video-id").each do |media|
+      if video = BrightcoveVideo.find_by_video_id(media.value)
+        video_ids << video.post_custom_field_value
+      end
+    end
+
+    PostCustomField.transaction do
+      PostCustomField.where(post_id: post.id, name: Brightcove::POST_CUSTOM_FIELD_NAME).delete_all
+      if video_ids.size > 0
+        params = video_ids.map do |val|
+          {
+            post_id: post.id,
+            name: Brightcove::POST_CUSTOM_FIELD_NAME,
+            value: val
+          }
+        end
+        PostCustomField.create!(params)
+      end
+    end
+  end
+
 end
 module ::Brightcove
   PLUGIN_NAME = "discourse-brightcove"
+  POST_CUSTOM_FIELD_NAME = "brightcove_video"
 
   class Engine < ::Rails::Engine
     engine_name Brightcove::PLUGIN_NAME

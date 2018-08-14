@@ -4,6 +4,7 @@ plugins:
     client: true
   brightcove_account_id:
     default: ""
+    client: true
   brightcove_client_id:
     default: ""
   brightcove_client_secret:

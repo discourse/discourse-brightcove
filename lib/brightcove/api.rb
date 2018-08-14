@@ -2,6 +2,32 @@ module Brightcove
   class ApiError < StandardError; end
 
   class API
+    attr_accessor :id
+    def initialize(id)
+      @id = id
+    end
+
+    def delete
+      self.class.cms_request(:delete, "videos/#{@id}")
+    end
+
+    def move_to_folder(folder_id)
+      self.class.cms_request(:put, "folders/#{folder_id}/videos/#{@id}")
+    end
+
+    def get_ingest_url(filename)
+      self.class.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{filename}")
+    end
+
+    def request_ingest(url, callback_url)
+      self.class.ingest_request(:post, "videos/#{@id}/ingest-requests", master: { url: url }, callbacks: [callback_url])
+    end
+
+    def self.create(name)
+      response = cms_request(:post, 'videos', name: name)
+      self.new(response[:id])
+    end
+
     REDIS_KEY = 'brightcove_access_token'
     OAUTH_ENDPOINT = "https://oauth.brightcove.com/v4/access_token"
     TOKEN_TTL_MARGIN = 5
@@ -33,7 +59,6 @@ module Brightcove
       raise ApiError, "Brightcove Error #{response.status}"
     end
 
-    private
     def self.access_token
       $redis.get(REDIS_KEY) || acquire_token
     end
