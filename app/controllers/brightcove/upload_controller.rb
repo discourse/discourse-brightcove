@@ -12,7 +12,7 @@ module Brightcove
       filename = params.require(:filename)
       hijack do
         api = API.create(name)
-        video = BrightcoveVideo.create!(video_id: api.id, state: BrightcoveVideo::PENDING)
+        video = BrightcoveVideo.new(video_id: api.id, state: BrightcoveVideo::PENDING)
         begin
           ingest_info = api.get_ingest_url(filename)
           video.secret_access_key = ingest_info[:secret_access_key]

@@ -10,7 +10,6 @@ register_asset "vendor/evaporate.js"
 register_asset "vendor/spark-md5.js"
 
 require_relative 'lib/brightcove/api'
-require_relative 'lib/brightcove/video'
 
 after_initialize do
 
