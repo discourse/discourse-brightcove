@@ -10,43 +10,67 @@ function initializeBrightcove(api) {
 
   const siteSettings = api.container.lookup("site-settings:main");
 
+  function renderVideo($container, video_id) {
+    $container.removeAttr("data-video-id");
+    const $videoElem = $("<video/>").attr({
+      "data-video-id": video_id,
+      "data-account": siteSettings.brightcove_account_id,
+      "data-player": siteSettings.brightcove_player,
+      "data-application-id": siteSettings.brightcove_application_id,
+      "data-embed": siteSettings.brightcove_embed,
+      controls: "",
+      class: "video-js"
+    });
+    $container.html($videoElem);
+
+    window.bc($videoElem[0]);
+    window.videojs($(".video-js", $container[0])[0]);
+  }
+
+  const placeholders = {
+    pending: {
+      iconHtml: "<div class='spinner'></div>",
+      string: I18n.t("brightcove.state.pending")
+    },
+    errored: {
+      iconHtml: renderIcon("string", "exclamation-triangle"),
+      string: I18n.t("brightcove.state.errored")
+    },
+    unknown: {
+      iconHtml: renderIcon("string", "question-circle"),
+      string: I18n.t("brightcove.state.unknown")
+    }
+  };
+
+  function renderPlaceholder($container, type) {
+    $container.html(
+      `<div class='icon-container'><span class='brightcove-message'>${
+        placeholders[type].iconHtml
+      } ${placeholders[type].string}</span></div>`
+    );
+  }
+
   function renderVideos($elem, post) {
     $("div[data-video-id]", $elem).each((index, container) => {
       const $container = $(container);
       const video_id = $container.data("video-id").toString();
-      if (post.brightcove_videos.includes(`${video_id}:ready`)) {
-        $(container).removeClass("brightcove-pending");
-        $(container).removeClass("brightcove-unknown");
-        $container.removeAttr("data-video-id");
-        const $videoElem = $("<video/>").attr({
-          "data-video-id": video_id,
-          "data-account": siteSettings.brightcove_account_id,
-          "data-player": siteSettings.brightcove_player,
-          "data-application-id": siteSettings.brightcove_application_id,
-          "data-embed": siteSettings.brightcove_embed,
-          controls: "",
-          class: "video-js"
-        });
-        $container.html($videoElem);
+      if (!post.brightcove_videos) return;
 
-        window.bc($videoElem[0]);
-        window.videojs($(".video-js", container)[0]);
-      } else if (post.brightcove_videos.includes(`${video_id}:pending`)) {
-        $container.addClass("brightcove-pending");
-        $container.html(
-          "<div class='icon-container'><div class='spinner'></div></div>"
-        );
-      } else if (post.brightcove_videos.includes(`${video_id}:errored`)) {
-        $container.addClass("brightcove-error");
+      const video_string = post.brightcove_videos.find(v =>
+        v.startsWith(`${video_id}:`)
+      );
+      if (video_string) {
+        const status = video_string.replace(`${video_id}:`, "");
 
-        $container.html(
-          `<div class='icon-container'>${renderIcon(
-            "string",
-            "exclamation-triangle"
-          )}</div>`
-        );
+        if (status === "ready") {
+          renderVideo($container, video_id);
+        } else if (status === "errored") {
+          renderPlaceholder($container, "errored");
+        } else {
+          renderPlaceholder($container, "pending");
+        }
       } else {
-        $(container).addClass("brightcove-unknown");
+        renderPlaceholder($container, "unknown");
       }
     });
   }

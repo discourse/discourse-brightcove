@@ -21,3 +21,6 @@ plugins:
   brightcove_embed:
     default: "default"
     client: true
+  brightcove_upload_groups:
+    default: ""
+    type: 'list'

@@ -63,7 +63,8 @@ export default Ember.Component.extend({
       },
       cryptoHexEncodedHash256: function(data) {
         return sha256(data);
-      }
+      },
+      logging: false
     };
 
     Evaporate.create(config)

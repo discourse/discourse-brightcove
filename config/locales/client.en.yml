@@ -14,3 +14,7 @@ en:
         uploading: "Uploading... {{progress}}%"
         finishing: "Finishing upload"
         complete: "Upload complete {{info}}"
+      state:
+        errored: "Video Ingest Error"
+        unknown: "Unknown Video"
+        pending: "Processing Video"

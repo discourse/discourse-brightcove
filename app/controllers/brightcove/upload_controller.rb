@@ -1,6 +1,9 @@
 module Brightcove
   class UploadController < ApplicationController
     requires_plugin Brightcove::PLUGIN_NAME
+
+    before_action :ensure_logged_in, :check_upload_permission, except: [:callback]
+
     skip_before_action :check_xhr,
                       :preload_json,
                       :verify_authenticity_token,
@@ -105,6 +108,10 @@ module Brightcove
 
     def hexhmac(key, value)
       OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), key, value)
+    end
+
+    def check_upload_permission
+      raise Discourse::InvalidAccess unless guardian.can_upload_to_brightcove?
     end
   end
 end
