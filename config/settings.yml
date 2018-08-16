@@ -1,6 +1,6 @@
 plugins:
   brightcove_enabled:
-    default: true
+    default: false
     client: true
   brightcove_account_id:
     default: ""
@@ -24,3 +24,7 @@ plugins:
   brightcove_upload_groups:
     default: ""
     type: 'list'
+  brightcove_file_extensions:
+    default: "mp4"
+    type: 'list'
+    client: true

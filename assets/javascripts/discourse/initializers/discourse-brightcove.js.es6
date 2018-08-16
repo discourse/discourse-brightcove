@@ -86,19 +86,19 @@ function initializeBrightcove(api) {
     }
   });
 
-  api.onToolbarCreate(toolbar => {
-    toolbar.addButton({
-      id: "brightcove-upload",
-      group: "insertions",
-      icon: "film",
-      title: "brightcove.upload_title",
-      perform: e => {
-        showModal("brightcove-upload-modal").setProperties({
-          toolbarEvent: e
-        });
-      }
-    });
-  });
+  // api.onToolbarCreate(toolbar => {
+  //   toolbar.addButton({
+  //     id: "brightcove-upload",
+  //     group: "insertions",
+  //     icon: "film",
+  //     title: "brightcove.upload_title",
+  //     perform: e => {
+  //       showModal("brightcove-upload-modal").setProperties({
+  //         toolbarEvent: e
+  //       });
+  //     }
+  //   });
+  // });
 
   api.registerCustomPostMessageCallback(
     "brightcove_video_changed",
@@ -111,6 +111,18 @@ function initializeBrightcove(api) {
       });
     }
   );
+
+  api.addComposerUploadHandler(
+    siteSettings.brightcove_file_extensions,
+    file => {
+      console.log("Handling upload for ", file);
+      Ember.run.next(() => {
+        showModal("brightcove-upload-modal").setProperties({
+          file
+        });
+      });
+    }
+  );
 }
 
 export default {
@@ -119,7 +131,7 @@ export default {
   initialize(container) {
     const siteSettings = container.lookup("site-settings:main");
     if (siteSettings.brightcove_enabled) {
-      withPluginApi("0.8.8", initializeBrightcove);
+      withPluginApi("0.8.24", initializeBrightcove);
     }
   }
 };

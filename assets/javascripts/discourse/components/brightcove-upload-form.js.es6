@@ -127,9 +127,11 @@ export default Ember.Component.extend({
   ingestComplete() {
     const videoInfo = this.get("videoInfo");
     this.setProgress("complete", { info: `[video=${videoInfo["video_id"]}]` });
-    this.get("toolbarEvent").addText(`[video=${videoInfo["video_id"]}]`);
-    const composer = Discourse.__container__.lookup("controller:composer");
-    composer.send("closeModal");
+    this.appEvents.trigger(
+      "composer:insert-text",
+      `[video=${videoInfo["video_id"]}]`
+    );
+    this.sendAction("closeModal");
   },
 
   @computed("file", "videoName")
