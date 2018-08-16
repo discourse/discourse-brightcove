@@ -15,7 +15,7 @@ module Brightcove
       filename = params.require(:filename)
       hijack do
         api = API.create(name)
-        video = BrightcoveVideo.new(video_id: api.id, state: BrightcoveVideo::PENDING)
+        video = Brightcove::Video.new(video_id: api.id, state: Brightcove::Video::PENDING)
         begin
           ingest_info = api.get_ingest_url(filename)
           video.secret_access_key = ingest_info[:secret_access_key]
@@ -39,7 +39,7 @@ module Brightcove
       to_sign = params.require(:to_sign)
       datetime = params.require(:datetime)
 
-      video = BrightcoveVideo.find_by_video_id(video_id)
+      video = Brightcove::Video.find_by_video_id(video_id)
       raise Discourse::NotFound if video.nil? || video.secret_access_key.nil?
 
       secret = video.secret_access_key
@@ -58,7 +58,7 @@ module Brightcove
     def ingest
       video_id = params.require(:video_id)
 
-      video = BrightcoveVideo.find_by_video_id(video_id)
+      video = Brightcove::Video.find_by_video_id(video_id)
       raise Discourse::NotFound if video.nil? || video.api_request_url.nil?
 
       video.callback_key = SecureRandom.hex
@@ -81,16 +81,15 @@ module Brightcove
         video_id = params.require(:video_id)
         secret = params.require(:secret)
 
-        video = BrightcoveVideo.find_by_video_id(video_id)
+        video = Brightcove::Video.find_by_video_id(video_id)
         raise Discourse::NotFound if video.nil? || video.callback_key.nil?
 
         raise Discourse::InvalidAccess unless video.callback_key == secret
 
-        pcf = video.post_custom_fields
         if data["status"] == "SUCCESS"
-          video.state = BrightcoveVideo::READY
+          video.state = Brightcove::Video::READY
         else
-          video.state = BrightcoveVideo::ERRORED
+          video.state = Brightcove::Video::ERRORED
         end
         video.save!
         video.update_post_custom_fields!
