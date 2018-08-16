@@ -113,7 +113,7 @@ function initializeBrightcove(api) {
   );
 
   api.addComposerUploadHandler(
-    siteSettings.brightcove_file_extensions,
+    siteSettings.brightcove_file_extensions.split("|"),
     file => {
       console.log("Handling upload for ", file);
       Ember.run.next(() => {

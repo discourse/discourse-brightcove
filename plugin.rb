@@ -14,7 +14,7 @@ require_relative 'lib/brightcove/api'
 after_initialize do
 
   register_html_builder('server:before-head-close') do |ctx|
-    break unless SiteSetting.brightcove_enabled
+    next unless SiteSetting.brightcove_enabled
     "<script src='https://players.brightcove.net/#{SiteSetting.brightcove_account_id}/#{SiteSetting.brightcove_player}_#{SiteSetting.brightcove_embed}/index.min.js'></script>"
   end
 
