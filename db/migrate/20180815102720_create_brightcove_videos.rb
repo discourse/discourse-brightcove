@@ -6,6 +6,7 @@ class CreateBrightcoveVideos < ActiveRecord::Migration[5.2]
       t.string :secret_access_key
       t.string :api_request_url
       t.string :callback_key
+      t.datetime :created_at
     end
 
     add_index :brightcove_videos, :video_id, unique: true

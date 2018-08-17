@@ -1,5 +1,12 @@
 module Brightcove
-  class ApiError < StandardError; end
+
+  class ApiError < StandardError
+    attr_reader :code
+    def initialize(message = nil, code = nil)
+      @message = message
+      @code = code
+    end
+  end
 
   class API
     attr_accessor :id
@@ -52,11 +59,12 @@ module Brightcove
         },
         body: body.to_json
       )
+
       return true if response.status == 204
 
       return JSON.parse(response.body, symbolize_names: true) if [200, 201].include?(response.status)
 
-      raise ApiError, "Brightcove Error #{response.status}"
+      raise ApiError.new("Brightcove Error #{response.status}", response.status)
     end
 
     def self.access_token
@@ -74,7 +82,7 @@ module Brightcove
       )
 
       if response.status != 200
-        raise ApiError, "Error acquiring access token: #{response.status}"
+        raise ApiError.new("Error acquiring access token: #{response.status}", response.status)
       end
       data = JSON.parse(response.body, symbolize_names: true)
 

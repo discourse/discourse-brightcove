@@ -12,6 +12,7 @@ register_asset "vendor/spark-md5.js"
 require_relative 'lib/brightcove/api'
 
 after_initialize do
+  require_relative 'app/jobs/scheduled/clean_up_brightcove_videos'
 
   register_html_builder('server:before-head-close') do |ctx|
     next unless SiteSetting.brightcove_enabled
