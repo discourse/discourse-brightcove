@@ -57,6 +57,27 @@ RSpec.describe Brightcove::UploadController do
       expect(upload_request_stub).to have_been_requested.once
     end
 
+    context 'with rate limiter' do
+      before do
+        RateLimiter.enable
+        RateLimiter.clear_all!
+      end
+
+      after do
+        RateLimiter.disable
+      end
+
+      it "rate limits creation" do
+        SiteSetting.brightcove_uploads_per_day_per_user = 1
+
+        post "/brightcove/create.json", params: { name: "Test Name", filename: "filename.mp4" }
+        expect(response.status).to eq(200)
+
+        post "/brightcove/create.json", params: { name: "Test Name", filename: "filename.mp4" }
+        expect(response.status).to eq(429)
+      end
+    end
+
     it "allows signing" do
       v = Brightcove::Video.create!(video_id: 12, secret_access_key: "abcd", state: "pending")
       get "/brightcove/sign/12.json", params: { to_sign: "some string", datetime: "20180512T12:00Z" }

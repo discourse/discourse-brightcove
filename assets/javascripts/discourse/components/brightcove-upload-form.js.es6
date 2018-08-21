@@ -1,5 +1,6 @@
 import { default as computed } from "ember-addons/ember-computed-decorators";
 import { ajax } from "discourse/lib/ajax";
+import { popupAjaxError } from "discourse/lib/ajax-error";
 
 const Evaporate = window.Evaporate;
 const SparkMD5 = window.SparkMD5;
@@ -46,6 +47,7 @@ export default Ember.Component.extend({
       .catch(reason => {
         console.error("Could not create brightcove video.", reason);
         this.setProgress("error");
+        popupAjaxError(reason);
       });
   },
 

@@ -13,6 +13,9 @@ module Brightcove
     def create
       name = params.require(:name)
       filename = params.require(:filename)
+
+      RateLimiter.new(current_user, "brightcove_uploads_per_day", SiteSetting.brightcove_uploads_per_day_per_user, 1.day).performed! unless @guardian.is_admin?
+
       hijack do
         api = API.create(name)
         video = Brightcove::Video.new(video_id: api.id, state: Brightcove::Video::PENDING)
