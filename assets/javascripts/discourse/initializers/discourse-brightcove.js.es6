@@ -56,9 +56,9 @@ function initializeBrightcove(api) {
       const video_id = $container.data("video-id").toString();
       if (!post.brightcove_videos) return;
 
-      const video_string = post.brightcove_videos.find(v =>
-        v.startsWith(`${video_id}:`)
-      );
+      const video_string = post.brightcove_videos.find(v => {
+        return v.indexOf(`${video_id}:`) === 0;
+      });
       if (video_string) {
         const status = video_string.replace(`${video_id}:`, "");
 
