@@ -1,9 +1,8 @@
 en:
   js:
     brightcove:
-      upload_title: "Upload a video to Brightcove"
-      modal_title: "Brightcove Upload"
-      modal_subtitle: "Upload a video to Brightcove, and embed in this Discourse post"
+      modal_title: "Upload Video"
+      modal_subtitle: "Upload a video, and embed in this Discourse post"
       select_file: "Select File"
       file: "File"
       title: "Video Title"
