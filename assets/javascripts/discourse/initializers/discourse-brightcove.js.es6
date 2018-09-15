@@ -109,9 +109,10 @@ function initializeBrightcove(api) {
     siteSettings.brightcove_file_extensions.split("|"),
     file => {
       Ember.run.next(() => {
+        const user = api.getCurrentUser();
         if (
-          api.getCurrentUser().trust_level >=
-          siteSettings.brightcove_min_trust_level
+          user.trust_level >= siteSettings.brightcove_min_trust_level ||
+          user.staff
         ) {
           showModal("brightcove-upload-modal").setProperties({
             file
