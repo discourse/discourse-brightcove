@@ -15,11 +15,6 @@ require_relative 'lib/brightcove/api'
 after_initialize do
   require_relative 'app/jobs/scheduled/clean_up_brightcove_videos'
 
-  register_html_builder('server:before-head-close') do |ctx|
-    next unless SiteSetting.brightcove_enabled && SiteSetting.brightcove_account_id && SiteSetting.brightcove_player && SiteSetting.brightcove_embed
-    "<script src='https://players.brightcove.net/#{SiteSetting.brightcove_account_id}/#{SiteSetting.brightcove_player}_#{SiteSetting.brightcove_embed}/index.min.js'></script>"
-  end
-
   register_post_custom_field_type('brightcove_video', :string)
 
   topic_view_post_custom_fields_whitelister do |user|

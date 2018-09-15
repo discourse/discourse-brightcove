@@ -1,13 +1,9 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 import { renderIcon } from "discourse-common/lib/icon-library";
+import loadScript from "discourse/lib/load-script";
 
 function initializeBrightcove(api) {
-  if (typeof window.bc !== "function") {
-    console.error("Brightcove javascript bundle not loaded");
-    return;
-  }
-
   const siteSettings = api.container.lookup("site-settings:main");
 
   function renderVideo($container, video_id) {
@@ -63,7 +59,9 @@ function initializeBrightcove(api) {
         const status = video_string.replace(`${video_id}:`, "");
 
         if (status === "ready") {
-          renderVideo($container, video_id);
+          loadPlayerJs().then(() => {
+            renderVideo($container, video_id);
+          });
         } else if (status === "errored") {
           renderPlaceholder($container, "errored");
         } else {
@@ -73,6 +71,15 @@ function initializeBrightcove(api) {
         renderPlaceholder($container, "unknown");
       }
     });
+  }
+
+  function loadPlayerJs() {
+    return loadScript(
+      `https://players.brightcove.net/${siteSettings.brightcove_account_id}/${
+        siteSettings.brightcove_player
+      }_${siteSettings.brightcove_embed}/index.min.js`,
+      { scriptTag: true }
+    );
   }
 
   api.decorateCooked(($elem, helper) => {
@@ -85,20 +92,6 @@ function initializeBrightcove(api) {
       );
     }
   });
-
-  // api.onToolbarCreate(toolbar => {
-  //   toolbar.addButton({
-  //     id: "brightcove-upload",
-  //     group: "insertions",
-  //     icon: "film",
-  //     title: "brightcove.upload_title",
-  //     perform: e => {
-  //       showModal("brightcove-upload-modal").setProperties({
-  //         toolbarEvent: e
-  //       });
-  //     }
-  //   });
-  // });
 
   api.registerCustomPostMessageCallback(
     "brightcove_video_changed",
@@ -115,7 +108,6 @@ function initializeBrightcove(api) {
   api.addComposerUploadHandler(
     siteSettings.brightcove_file_extensions.split("|"),
     file => {
-      console.log("Handling upload for ", file);
       Ember.run.next(() => {
         showModal("brightcove-upload-modal").setProperties({
           file
