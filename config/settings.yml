@@ -21,9 +21,10 @@ plugins:
   brightcove_embed:
     default: "default"
     client: true
-  brightcove_upload_groups:
-    default: ""
-    type: 'list'
+  brightcove_min_trust_level:
+    default: 1
+    enum: 'TrustLevelSetting'
+    client: true
   brightcove_file_extensions:
     default: "mp4|mov|wmv"
     type: 'list'

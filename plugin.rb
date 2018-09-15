@@ -49,11 +49,7 @@ after_initialize do
   end
 
   add_to_class(:guardian, :can_upload_to_brightcove?) do
-    return true if SiteSetting.brightcove_upload_groups.blank? # all users can upload
-
-    # Check if user is in any allowed groups
-    allowed_groups = SiteSetting.brightcove_upload_groups.split("|")
-    @user.groups.where(name: allowed_groups).exists?
+    return @user.has_trust_level?(SiteSetting.brightcove_min_trust_level)
   end
 
 end

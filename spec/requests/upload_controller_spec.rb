@@ -41,8 +41,8 @@ RSpec.describe Brightcove::UploadController do
       sign_in(user)
     end
 
-    it "blocks access when groups restricted" do
-      SiteSetting.brightcove_upload_groups = "somegroup"
+    it "blocks access when trust level restricted" do
+      SiteSetting.brightcove_min_trust_level = 3
       post "/brightcove/create.json", params: { name: "Test Name", filename: "filename.mp4" }
       expect(response.status).to eq(403)
     end
