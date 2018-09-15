@@ -4,6 +4,8 @@ module Brightcove
     READY = "ready"
     PENDING = "pending"
 
+    belongs_to :user
+
     validates :state, inclusion: { in: %w(pending ready errored),
                                    message: "%{value} is not a valid state" }
 

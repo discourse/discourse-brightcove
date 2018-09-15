@@ -18,7 +18,7 @@ module Brightcove
 
       hijack do
         api = API.create(name)
-        video = Brightcove::Video.new(video_id: api.id, state: Brightcove::Video::PENDING)
+        video = Brightcove::Video.new(video_id: api.id, state: Brightcove::Video::PENDING, user: current_user)
         begin
           api.move_to_folder(SiteSetting.brightcove_folder_id) unless SiteSetting.brightcove_folder_id.blank?
           ingest_info = api.get_ingest_url(filename)
