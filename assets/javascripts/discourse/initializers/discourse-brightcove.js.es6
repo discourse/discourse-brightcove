@@ -109,9 +109,20 @@ function initializeBrightcove(api) {
     siteSettings.brightcove_file_extensions.split("|"),
     file => {
       Ember.run.next(() => {
-        showModal("brightcove-upload-modal").setProperties({
-          file
-        });
+        if (
+          api.getCurrentUser().trust_level >=
+          siteSettings.brightcove_min_trust_level
+        ) {
+          showModal("brightcove-upload-modal").setProperties({
+            file
+          });
+        } else {
+          bootbox.alert(
+            I18n.t("brightcove.not_allowed", {
+              trust_level: siteSettings.brightcove_min_trust_level
+            })
+          );
+        }
       });
     }
   );

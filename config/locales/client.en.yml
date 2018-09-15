@@ -7,6 +7,7 @@ en:
       select_file: "Select File"
       file: "File"
       title: "Video Title"
+      not_allowed: "Trust level %{trust_level} is required to upload videos"
       upload_progress:
         error: "An error has occurred"
         preparing: "Preparing to upload"
