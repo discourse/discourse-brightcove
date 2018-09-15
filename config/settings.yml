@@ -29,5 +29,6 @@ plugins:
     default: "mp4|mov|wmv"
     type: 'list'
     client: true
+    list_type: compact
   brightcove_uploads_per_day_per_user:
     default: 10
