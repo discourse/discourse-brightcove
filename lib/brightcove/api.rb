@@ -23,7 +23,7 @@ module Brightcove
     end
 
     def get_ingest_url(filename)
-      self.class.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{filename}")
+      self.class.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{URI.escape(filename)}")
     end
 
     def request_ingest(url, callback_url)
