@@ -71,7 +71,6 @@ module Brightcove
       hijack do
         api = API.new(video_id)
         callback_url = "#{Discourse.base_url}/brightcove/callback/#{video_id}/#{video.callback_key}"
-        # callback_url = "https://88467ee8.ngrok.io/brightcove/callback/#{video_id}/#{video.callback_key}"
 
         api.request_ingest(video.api_request_url, callback_url)
         render json: success_json
