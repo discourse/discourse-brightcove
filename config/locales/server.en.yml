@@ -1,0 +1,13 @@
+en:
+  site_settings:
+    brightcove_enabled: Enable the discourse-brightcove plugin
+    brightcove_account_id: Brightcove account ID
+    brightcove_client_id: Brightcove client ID for this application
+    brightcove_client_secret: Brightcove client secret for this application
+    brightcove_application_id: Brightcove application ID. Used to differentiate this application in video analytics
+    brightcove_folder_id: The folder ID for uploaded videos. Can be left blank to leave videos without a folder.
+    brightcove_player: Brightcove player ID
+    brightcove_embed: Brightcove embed ID
+    brightcove_min_trust_level: Required trust level for uploading videos to Brightcove
+    brightcove_file_extensions: A list of file extensions which can be uploaded to Brightcove
+    brightcove_uploads_per_day_per_user: Maximum number of videos that a user can upload per day
