@@ -2,11 +2,12 @@ en:
   js:
     brightcove:
       modal_title: "Upload Video"
-      modal_subtitle: "Upload and embed a video"
+      modal_subtitle: "Select a video to upload and embed"
       select_file: "Select File"
       file: "File"
       title: "Video Title"
       not_allowed: "Trust level %{trust_level} is required to upload videos"
+      upload_toolbar_title: Upload Video
       upload_progress:
         error: "An error has occurred"
         preparing: "Preparing to upload"

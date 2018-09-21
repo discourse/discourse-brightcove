@@ -127,6 +127,24 @@ function initializeBrightcove(api) {
       });
     }
   );
+
+  api.onToolbarCreate(toolbar => {
+    const user = api.getCurrentUser();
+    if (
+      user.trust_level >= siteSettings.brightcove_min_trust_level ||
+      user.staff
+    ) {
+      toolbar.addButton({
+        id: "brightcove-upload",
+        group: "insertions",
+        icon: "film",
+        title: "brightcove.upload_toolbar_title",
+        perform: () => {
+          showModal("brightcove-upload-modal");
+        }
+      });
+    }
+  });
 }
 
 export default {
