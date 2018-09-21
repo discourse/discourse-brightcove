@@ -26,7 +26,7 @@ plugins:
     enum: 'TrustLevelSetting'
     client: true
   brightcove_file_extensions:
-    default: "mp4|mov|wmv"
+    default: "mp4|mov|wmv|avi|mkv|mpg|mpeg|ogg"
     type: 'list'
     client: true
     list_type: compact
