@@ -120,7 +120,10 @@ function initializeBrightcove(api) {
         } else {
           bootbox.alert(
             I18n.t("brightcove.not_allowed", {
-              trust_level: siteSettings.brightcove_min_trust_level
+              trust_level: siteSettings.brightcove_min_trust_level,
+              trust_level_description: Discourse.Site.currentProp("trustLevels")
+                .findBy("id", siteSettings.brightcove_min_trust_level)
+                .get("name")
             })
           );
         }

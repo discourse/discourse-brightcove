@@ -6,7 +6,7 @@ en:
       select_file: "Select File"
       file: "File"
       title: "Video Title"
-      not_allowed: "Trust level %{trust_level} is required to upload videos"
+      not_allowed: "You must have trust level %{trust_level} (%{trust_level_description}) to upload videos"
       upload_toolbar_title: Upload Video
       upload_progress:
         error: "An error has occurred"
