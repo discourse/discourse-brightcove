@@ -8,6 +8,6 @@ en:
     brightcove_folder_id: The folder ID for uploaded videos. Can be left blank to leave videos without a folder.
     brightcove_player: Brightcove player ID
     brightcove_embed: Brightcove embed ID
-    brightcove_min_trust_level: Required trust level for uploading videos to Brightcove
+    brightcove_min_trust_level: Minimum required trust level for uploading videos to Brightcove
     brightcove_file_extensions: A list of file extensions which can be uploaded to Brightcove
     brightcove_uploads_per_day_per_user: Maximum number of videos that a user can upload per day
