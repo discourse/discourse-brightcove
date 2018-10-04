@@ -8,7 +8,7 @@ function initializeBrightcove(api) {
 
   function renderVideo($container, video_id) {
     $container.removeAttr("data-video-id");
-    const $videoElem = $("<video/>").attr({
+    const $videoElem = $("<video-js/>").attr({
       "data-video-id": video_id,
       "data-account": siteSettings.brightcove_account_id,
       "data-player": siteSettings.brightcove_player,
