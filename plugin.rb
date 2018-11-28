@@ -10,6 +10,8 @@ register_asset "vendor/es6-promise.auto.js"
 register_asset "vendor/evaporate.js"
 register_asset "vendor/spark-md5.js"
 
+register_svg_icon "film"
+
 require_relative 'lib/brightcove/api'
 
 after_initialize do
