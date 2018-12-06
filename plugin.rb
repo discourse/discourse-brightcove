@@ -14,6 +14,10 @@ register_svg_icon "film"
 
 require_relative 'lib/brightcove/api'
 
+extend_content_security_policy(
+  script_src: ["https://players.brightcove.net", "https://vjs.zencdn.net/"]
+)
+
 after_initialize do
   require_relative 'app/jobs/scheduled/clean_up_brightcove_videos'
 
