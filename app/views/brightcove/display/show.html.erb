@@ -1,0 +1,22 @@
+<html>
+<head>
+<style>
+    html, body, .video-js{
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+</head>
+<body>
+    <video-js data-video-id="<%=@video_id %>" 
+    data-account="<%= SiteSetting.brightcove_account_id %>" 
+    data-player="<%= SiteSetting.brightcove_player %>" 
+    data-embed="<%= SiteSetting.brightcove_embed %>" 
+    data-application-id="<%= SiteSetting.brightcove_application_id %>"
+    class="video-js"
+    controls></video>
+    <script src="//players.brightcove.net/<%= SiteSetting.brightcove_account_id %>/<%= SiteSetting.brightcove_player %>_<%= SiteSetting.brightcove_embed %>/index.min.js"></script>
+</body>
+</html>

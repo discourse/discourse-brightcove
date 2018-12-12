@@ -1,26 +1,17 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 import { renderIcon } from "discourse-common/lib/icon-library";
-import loadScript from "discourse/lib/load-script";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
 
   function renderVideo($container, video_id) {
     $container.removeAttr("data-video-id");
-    const $videoElem = $("<video-js/>").attr({
-      "data-video-id": video_id,
-      "data-account": siteSettings.brightcove_account_id,
-      "data-player": siteSettings.brightcove_player,
-      "data-application-id": siteSettings.brightcove_application_id,
-      "data-embed": siteSettings.brightcove_embed,
-      controls: "",
-      class: "video-js"
+    const $videoElem = $("<iframe/>").attr({
+      src: `${Discourse.BaseUri}/brightcove/video/${video_id}`,
+      class: "brightcove_video"
     });
     $container.html($videoElem);
-
-    window.bc($videoElem[0]);
-    window.videojs($(".video-js", $container[0])[0]);
   }
 
   const placeholders = {
@@ -59,9 +50,7 @@ function initializeBrightcove(api) {
         const status = video_string.replace(`${video_id}:`, "");
 
         if (status === "ready") {
-          loadPlayerJs().then(() => {
-            renderVideo($container, video_id);
-          });
+          renderVideo($container, video_id);
         } else if (status === "errored") {
           renderPlaceholder($container, "errored");
         } else {
@@ -71,15 +60,6 @@ function initializeBrightcove(api) {
         renderPlaceholder($container, "unknown");
       }
     });
-  }
-
-  function loadPlayerJs() {
-    return loadScript(
-      `https://players.brightcove.net/${siteSettings.brightcove_account_id}/${
-        siteSettings.brightcove_player
-      }_${siteSettings.brightcove_embed}/index.min.js`,
-      { scriptTag: true }
-    );
   }
 
   api.decorateCooked(($elem, helper) => {
