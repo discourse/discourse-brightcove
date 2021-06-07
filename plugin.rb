@@ -12,6 +12,7 @@ register_asset "vendor/spark-md5.js"
 
 register_svg_icon "film"
 
+require "onebox"
 require_relative 'lib/brightcove/api'
 
 extend_content_security_policy(
