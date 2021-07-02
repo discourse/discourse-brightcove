@@ -40,19 +40,8 @@ after_initialize do
       end
     end
 
-    PostCustomField.transaction do
-      PostCustomField.where(post_id: post.id, name: Brightcove::POST_CUSTOM_FIELD_NAME).delete_all
-      if video_ids.size > 0
-        params = video_ids.map do |val|
-          {
-            post_id: post.id,
-            name: Brightcove::POST_CUSTOM_FIELD_NAME,
-            value: val
-          }
-        end
-        PostCustomField.create!(params)
-      end
-    end
+    post.custom_fields[Brightcove::POST_CUSTOM_FIELD_NAME] = video_ids
+    post.save_custom_fields
   end
 
   add_to_class(:guardian, :can_upload_to_brightcove?) do
