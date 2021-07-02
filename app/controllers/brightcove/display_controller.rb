@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Brightcove
   class DisplayController < ApplicationController
     skip_before_action :check_xhr

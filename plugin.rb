@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # name: discourse-brightcove
 # about: Enable onebox support for Brightcove player URLs
 # version: 0.1

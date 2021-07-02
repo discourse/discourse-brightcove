@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Brightcove
 
   class ApiError < StandardError
@@ -23,7 +24,7 @@ module Brightcove
     end
 
     def get_ingest_url(filename)
-      self.class.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{URI.escape(filename)}")
+      self.class.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{CGI.escape(filename)}")
     end
 
     def request_ingest(url, callback_url)
@@ -68,7 +69,7 @@ module Brightcove
     end
 
     def self.access_token
-      $redis.get(REDIS_KEY) || acquire_token
+      Discourse.redis.get(REDIS_KEY) || acquire_token
     end
 
     def self.acquire_token
@@ -88,7 +89,7 @@ module Brightcove
 
       access_token = data[:access_token]
       ttl = data[:expires_in] - TOKEN_TTL_MARGIN
-      $redis.setex(REDIS_KEY, ttl, access_token)
+      Discourse.redis.setex(REDIS_KEY, ttl, access_token)
 
       access_token
     end
