@@ -1,6 +1,7 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 import { renderIcon } from "discourse-common/lib/icon-library";
+import I18n from "I18n";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
@@ -9,7 +10,7 @@ function initializeBrightcove(api) {
     $container.removeAttr("data-video-id");
     const $videoElem = $("<iframe/>").attr({
       src: `${Discourse.BaseUri}/brightcove/video/${video_id}`,
-      class: "brightcove_video"
+      class: "brightcove_video",
     });
     $container.html($videoElem);
   }
@@ -17,23 +18,21 @@ function initializeBrightcove(api) {
   const placeholders = {
     pending: {
       iconHtml: "<div class='spinner'></div>",
-      string: I18n.t("brightcove.state.pending")
+      string: I18n.t("brightcove.state.pending"),
     },
     errored: {
       iconHtml: renderIcon("string", "exclamation-triangle"),
-      string: I18n.t("brightcove.state.errored")
+      string: I18n.t("brightcove.state.errored"),
     },
     unknown: {
       iconHtml: renderIcon("string", "question-circle"),
-      string: I18n.t("brightcove.state.unknown")
-    }
+      string: I18n.t("brightcove.state.unknown"),
+    },
   };
 
   function renderPlaceholder($container, type) {
     $container.html(
-      `<div class='icon-container'><span class='brightcove-message'>${
-        placeholders[type].iconHtml
-      } ${placeholders[type].string}</span></div>`
+      `<div class='icon-container'><span class='brightcove-message'>${placeholders[type].iconHtml} ${placeholders[type].string}</span></div>`
     );
   }
 
@@ -41,9 +40,11 @@ function initializeBrightcove(api) {
     $("div[data-video-id]", $elem).each((index, container) => {
       const $container = $(container);
       const video_id = $container.data("video-id").toString();
-      if (!post.brightcove_videos) return;
+      if (!post.brightcove_videos) {
+        return;
+      }
 
-      const video_string = post.brightcove_videos.find(v => {
+      const video_string = post.brightcove_videos.find((v) => {
         return v.indexOf(`${video_id}:`) === 0;
       });
       if (video_string) {
@@ -87,7 +88,7 @@ function initializeBrightcove(api) {
 
   api.addComposerUploadHandler(
     siteSettings.brightcove_file_extensions.split("|"),
-    file => {
+    (file) => {
       Ember.run.next(() => {
         const user = api.getCurrentUser();
         if (
@@ -95,7 +96,7 @@ function initializeBrightcove(api) {
           user.staff
         ) {
           showModal("brightcove-upload-modal").setProperties({
-            file
+            file,
           });
         } else {
           bootbox.alert(
@@ -103,7 +104,7 @@ function initializeBrightcove(api) {
               trust_level: siteSettings.brightcove_min_trust_level,
               trust_level_description: Discourse.Site.currentProp("trustLevels")
                 .findBy("id", siteSettings.brightcove_min_trust_level)
-                .get("name")
+                .get("name"),
             })
           );
         }
@@ -111,7 +112,7 @@ function initializeBrightcove(api) {
     }
   );
 
-  api.onToolbarCreate(toolbar => {
+  api.onToolbarCreate((toolbar) => {
     const user = api.getCurrentUser();
     if (
       user.trust_level >= siteSettings.brightcove_min_trust_level ||
@@ -124,7 +125,7 @@ function initializeBrightcove(api) {
         title: "brightcove.upload_toolbar_title",
         perform: () => {
           showModal("brightcove-upload-modal");
-        }
+        },
       });
     }
   });
@@ -138,5 +139,5 @@ export default {
     if (siteSettings.brightcove_enabled) {
       withPluginApi("0.8.24", initializeBrightcove);
     }
-  }
+  },
 };
