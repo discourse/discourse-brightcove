@@ -23,7 +23,7 @@ module Jobs
           api.delete
           video.destroy!
         rescue Brightcove::ApiError => e
-          if e.code == 429
+          if e.status == 429
             # Rate limit, stop and run the job later
             Jobs.enqueue_in(1.minute, :clean_up_brightcove_videos)
             return
