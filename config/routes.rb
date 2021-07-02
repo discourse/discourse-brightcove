@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Brightcove::Engine.routes.draw do
   get "/video/:video_id" => 'display#show'
   post "/create" => 'upload#create'

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Jobs
   class CleanUpBrightcoveVideos < Jobs::Scheduled
     every 1.hour

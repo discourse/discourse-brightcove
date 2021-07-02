@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Brightcove
   class UploadController < ApplicationController
     requires_plugin Brightcove::PLUGIN_NAME
