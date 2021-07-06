@@ -30,3 +30,22 @@ module Brightcove
 
   end
 end
+
+# == Schema Information
+#
+# Table name: brightcove_videos
+#
+#  id                :bigint           not null, primary key
+#  video_id          :string           not null
+#  state             :string           not null
+#  secret_access_key :string
+#  api_request_url   :string
+#  callback_key      :string
+#  created_at        :datetime
+#  user_id           :integer
+#  tombstoned_at     :datetime
+#
+# Indexes
+#
+#  index_brightcove_videos_on_video_id  (video_id) UNIQUE
+#

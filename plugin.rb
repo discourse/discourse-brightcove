@@ -36,7 +36,8 @@ after_initialize do
   on(:post_process_cooked) do |doc, post|
     video_ids = []
     doc.css("div/@data-video-id").each do |media|
-      if video = Brightcove::Video.find_by_video_id(media.value)
+      if video = Brightcove::Video.find_by(video_id: media.value)
+        video.update(tombstoned_at: nil) if video.tombstoned_at
         video_ids << video.post_custom_field_value
       end
     end
