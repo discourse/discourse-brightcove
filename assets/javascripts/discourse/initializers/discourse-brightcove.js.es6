@@ -63,16 +63,19 @@ function initializeBrightcove(api) {
     });
   }
 
-  api.decorateCooked(($elem, helper) => {
-    if (helper) {
-      const post = helper.getModel();
-      renderVideos($elem, post);
-    } else {
-      $("div[data-video-id]", $elem).html(
-        `<div class='icon-container'>${renderIcon("string", "film")}</div>`
-      );
-    }
-  });
+  api.decorateCooked(
+    ($elem, helper) => {
+      if (helper) {
+        const post = helper.getModel();
+        renderVideos($elem, post);
+      } else {
+        $("div[data-video-id]", $elem).html(
+          `<div class='icon-container'>${renderIcon("string", "film")}</div>`
+        );
+      }
+    },
+    { id: "discourse-brightcove" }
+  );
 
   api.registerCustomPostMessageCallback(
     "brightcove_video_changed",
