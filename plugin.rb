@@ -23,11 +23,8 @@ extend_content_security_policy(
 after_initialize do
   require_relative 'app/jobs/scheduled/clean_up_brightcove_videos'
 
-  register_post_custom_field_type('brightcove_video', :string)
-
-  topic_view_post_custom_fields_whitelister do |user|
-    Brightcove::POST_CUSTOM_FIELD_NAME
-  end
+  register_post_custom_field_type(Brightcove::POST_CUSTOM_FIELD_NAME, :string)
+  topic_view_post_custom_fields_allowlister { Brightcove::POST_CUSTOM_FIELD_NAME }
 
   add_to_serializer(:post, :brightcove_videos, false) do
     Array(post_custom_fields[Brightcove::POST_CUSTOM_FIELD_NAME])
