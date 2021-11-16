@@ -2,6 +2,7 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 import { renderIcon } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
+import Site from "discourse/models/site";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
@@ -105,7 +106,7 @@ function initializeBrightcove(api) {
           bootbox.alert(
             I18n.t("brightcove.not_allowed", {
               trust_level: siteSettings.brightcove_min_trust_level,
-              trust_level_description: Discourse.Site.currentProp("trustLevels")
+              trust_level_description: Site.currentProp("trustLevels")
                 .findBy("id", siteSettings.brightcove_min_trust_level)
                 .get("name"),
             })
