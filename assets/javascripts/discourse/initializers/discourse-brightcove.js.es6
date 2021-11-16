@@ -5,6 +5,7 @@ import I18n from "I18n";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
+  const site = api.container.lookup("site:main");
 
   function renderVideo($container, video_id) {
     $container.removeAttr("data-video-id");
@@ -105,7 +106,7 @@ function initializeBrightcove(api) {
           bootbox.alert(
             I18n.t("brightcove.not_allowed", {
               trust_level: siteSettings.brightcove_min_trust_level,
-              trust_level_description: Discourse.Site.currentProp("trustLevels")
+              trust_level_description: site.trustLevels
                 .findBy("id", siteSettings.brightcove_min_trust_level)
                 .get("name"),
             })
