@@ -92,7 +92,14 @@ function initializeBrightcove(api) {
 
   api.addComposerUploadHandler(
     siteSettings.brightcove_file_extensions.split("|"),
-    (file) => {
+    (files) => {
+      let file;
+      if (Array.isArray(files)) {
+        file = files[0];
+      } else {
+        file = files;
+      }
+
       Ember.run.next(() => {
         const user = api.getCurrentUser();
         if (
