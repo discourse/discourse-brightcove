@@ -22,7 +22,7 @@ describe Brightcove::API do
 
   describe "auth token" do
     it 'acquires and saves access token' do
-      $redis.del(Brightcove::API::REDIS_KEY)
+      Discourse.redis.del(Brightcove::API::REDIS_KEY)
 
       # Acquires
       token = described_class.access_token
