@@ -2,6 +2,7 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 import { renderIcon } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
+import { next } from "@ember/runloop";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
@@ -100,7 +101,7 @@ function initializeBrightcove(api) {
         file = files;
       }
 
-      Ember.run.next(() => {
+      next(() => {
         const user = api.getCurrentUser();
         if (
           user.trust_level >= siteSettings.brightcove_min_trust_level ||
