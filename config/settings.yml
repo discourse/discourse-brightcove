@@ -23,11 +23,11 @@ plugins:
     client: true
   brightcove_min_trust_level:
     default: 1
-    enum: 'TrustLevelSetting'
+    enum: "TrustLevelSetting"
     client: true
   brightcove_file_extensions:
     default: "mp4|mov|wmv|avi|mkv|mpg|mpeg|ogg"
-    type: 'list'
+    type: "list"
     client: true
     list_type: compact
   brightcove_uploads_per_day_per_user:
