@@ -4,6 +4,7 @@
 # version: 0.1
 # authors: David Taylor
 # url: https://github.com/discourse/discourse-brightcove
+# transpile_js: true
 
 enabled_site_setting :brightcove_enabled
 register_asset "stylesheets/brightcove.scss"
