@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-describe "After Cooked Hook" do
+describe CookedPostProcessor do
   before do
     SiteSetting.brightcove_enabled = true
   end
