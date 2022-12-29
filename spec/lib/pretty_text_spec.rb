@@ -1,9 +1,8 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe PrettyText do
-
-  it 'renders a video' do
+  it "renders a video" do
     cooked = PrettyText.cook <<~MD
       [video=1234]
     MD

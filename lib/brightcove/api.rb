@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 module Brightcove
-
   class ApiError < StandardError
     attr_reader :status
     def initialize(message, status: nil)
@@ -24,19 +23,29 @@ module Brightcove
     end
 
     def get_ingest_url(filename)
-      self.class.ingest_request(:get, "videos/#{@id}/upload-urls/discourse_#{@id}_#{CGI.escape(filename)}")
+      self.class.ingest_request(
+        :get,
+        "videos/#{@id}/upload-urls/discourse_#{@id}_#{CGI.escape(filename)}",
+      )
     end
 
     def request_ingest(url, callback_url)
-      self.class.ingest_request(:post, "videos/#{@id}/ingest-requests", master: { url: url }, callbacks: [callback_url])
+      self.class.ingest_request(
+        :post,
+        "videos/#{@id}/ingest-requests",
+        master: {
+          url: url,
+        },
+        callbacks: [callback_url],
+      )
     end
 
     def self.create(name)
-      response = cms_request(:post, 'videos', name: name)
+      response = cms_request(:post, "videos", name: name)
       self.new(response[:id])
     end
 
-    REDIS_KEY = 'brightcove_access_token'
+    REDIS_KEY = "brightcove_access_token"
     OAUTH_ENDPOINT = "https://oauth.brightcove.com/v4/access_token"
     TOKEN_TTL_MARGIN = 5
 
@@ -53,19 +62,25 @@ module Brightcove
 
     def self.request(method, url, body = {})
       connection = Excon.new(url)
-      response = connection.request(
-        method: method,
-        headers: {
-          'Authorization' => "Bearer #{access_token}"
-        },
-        body: body.to_json
-      )
+      response =
+        connection.request(
+          method: method,
+          headers: {
+            "Authorization" => "Bearer #{access_token}",
+          },
+          body: body.to_json,
+        )
 
       return true if response.status == 204
 
-      return JSON.parse(response.body, symbolize_names: true) if [200, 201].include?(response.status)
+      if [200, 201].include?(response.status)
+        return JSON.parse(response.body, symbolize_names: true)
+      end
 
-      raise ApiError.new("Brightcove Error #{response.status}: #{response.body}", status: response.status)
+      raise ApiError.new(
+              "Brightcove Error #{response.status}: #{response.body}",
+              status: response.status,
+            )
     end
 
     def self.access_token
@@ -73,17 +88,22 @@ module Brightcove
     end
 
     def self.acquire_token
-      response = Excon.post(
-        OAUTH_ENDPOINT,
-        headers: {
-          "Authorization" => "Basic #{Base64.strict_encode64("#{SiteSetting.brightcove_client_id}:#{SiteSetting.brightcove_client_secret}")}",
-          "Content-Type" => "application/x-www-form-urlencoded"
-        },
-        body: URI.encode_www_form(grant_type: "client_credentials")
-      )
+      response =
+        Excon.post(
+          OAUTH_ENDPOINT,
+          headers: {
+            "Authorization" =>
+              "Basic #{Base64.strict_encode64("#{SiteSetting.brightcove_client_id}:#{SiteSetting.brightcove_client_secret}")}",
+            "Content-Type" => "application/x-www-form-urlencoded",
+          },
+          body: URI.encode_www_form(grant_type: "client_credentials"),
+        )
 
       if response.status != 200
-        raise ApiError.new("Error acquiring access token: #{response.status}", status: response.status)
+        raise ApiError.new(
+                "Error acquiring access token: #{response.status}",
+                status: response.status,
+              )
       end
       data = JSON.parse(response.body, symbolize_names: true)
 

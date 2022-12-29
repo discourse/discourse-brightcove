@@ -9,7 +9,15 @@ RSpec.describe Brightcove::DisplayController do
     SiteSetting.brightcove_client_secret = "abc"
   end
 
-  let!(:video) { Brightcove::Video.create!(video_id: "12", secret_access_key: "abcd", state: "ready", api_request_url: "https://hello.world/video.mp4", callback_key: SecureRandom.hex) }
+  let!(:video) do
+    Brightcove::Video.create!(
+      video_id: "12",
+      secret_access_key: "abcd",
+      state: "ready",
+      api_request_url: "https://hello.world/video.mp4",
+      callback_key: SecureRandom.hex,
+    )
+  end
 
   it "works" do
     get "/brightcove/video/#{video.video_id}"
@@ -26,5 +34,4 @@ RSpec.describe Brightcove::DisplayController do
     get "/brightcove/video/#{video.video_id}"
     expect(response.status).to eq(404)
   end
-
 end
