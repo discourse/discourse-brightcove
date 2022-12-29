@@ -19,24 +19,25 @@ module Jobs
       return unless SiteSetting.brightcove_enabled
 
       # Tombstone any orphaned videos
-      orphaned_videos = Brightcove::Video.\
-        where("brightcove_videos.created_at < ?", 7.days.ago).
-        where(tombstoned_at: nil).
-        where(<<~SQL,
+      orphaned_videos =
+        Brightcove::Video
+          .where("brightcove_videos.created_at < ?", 7.days.ago)
+          .where(tombstoned_at: nil)
+          .where(<<~SQL, deleted_threshold: 1.day.ago)
           brightcove_videos.state <> 'ready'
           OR NOT EXISTS (#{POSTS_WITH_VIDEO_SQL})
         SQL
-        deleted_threshold: 1.day.ago)
       orphaned_videos.update_all(tombstoned_at: Time.zone.now)
 
       # Untombstone any videos which now have associated posts
-      restorable_videos = Brightcove::Video.\
-        where("tombstoned_at IS NOT NULL").
-        where(<<~SQL,
+      restorable_videos =
+        Brightcove::Video.where("tombstoned_at IS NOT NULL").where(
+          <<~SQL,
           brightcove_videos.state = 'ready'
           AND EXISTS (#{POSTS_WITH_VIDEO_SQL})
         SQL
-        deleted_threshold: 1.day.ago)
+          deleted_threshold: 1.day.ago,
+        )
       restorable_videos.update_all(tombstoned_at: nil)
 
       # Delete tombstoned videos from brightcove after duration
@@ -53,9 +54,7 @@ module Jobs
             return
           end
         end
-
       end
     end
-
   end
 end

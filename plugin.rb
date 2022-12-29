@@ -15,14 +15,14 @@ register_asset "vendor/spark-md5.js"
 register_svg_icon "film"
 
 require "onebox"
-require_relative 'lib/brightcove/api'
+require_relative "lib/brightcove/api"
 
 extend_content_security_policy(
-  script_src: ["https://players.brightcove.net", "https://vjs.zencdn.net/"]
+  script_src: %w[https://players.brightcove.net https://vjs.zencdn.net/],
 )
 
 after_initialize do
-  require_relative 'app/jobs/scheduled/clean_up_brightcove_videos'
+  require_relative "app/jobs/scheduled/clean_up_brightcove_videos"
 
   register_post_custom_field_type(Brightcove::POST_CUSTOM_FIELD_NAME, :string)
   topic_view_post_custom_fields_allowlister { Brightcove::POST_CUSTOM_FIELD_NAME }
@@ -33,12 +33,14 @@ after_initialize do
 
   on(:post_process_cooked) do |doc, post|
     video_ids = []
-    doc.css("div/@data-video-id").each do |media|
-      if video = Brightcove::Video.find_by(video_id: media.value)
-        video.update(tombstoned_at: nil) if video.tombstoned_at
-        video_ids << video.post_custom_field_value
+    doc
+      .css("div/@data-video-id")
+      .each do |media|
+        if video = Brightcove::Video.find_by(video_id: media.value)
+          video.update(tombstoned_at: nil) if video.tombstoned_at
+          video_ids << video.post_custom_field_value
+        end
       end
-    end
 
     post.custom_fields[Brightcove::POST_CUSTOM_FIELD_NAME] = video_ids
     post.save_custom_fields
@@ -47,7 +49,6 @@ after_initialize do
   add_to_class(:guardian, :can_upload_to_brightcove?) do
     return @user.has_trust_level?(SiteSetting.brightcove_min_trust_level)
   end
-
 end
 module ::Brightcove
   PLUGIN_NAME = "discourse-brightcove"
@@ -59,9 +60,7 @@ module ::Brightcove
   end
 end
 
-Discourse::Application.routes.append do
-  mount ::Brightcove::Engine, at: '/brightcove'
-end
+Discourse::Application.routes.append { mount ::Brightcove::Engine, at: "/brightcove" }
 
 Onebox = Onebox
 
@@ -71,7 +70,7 @@ module Onebox
       include Engine
       always_https
 
-      matches_regexp(/^https:\/\/players\.brightcove.net\/[0-9]+\/[^\/]+\/index\.html\?videoId=[0-9]+$/)
+      matches_regexp(%r{^https://players\.brightcove.net/[0-9]+/[^/]+/index\.html\?videoId=[0-9]+$})
 
       def to_html
         "<iframe src=\"#{@url}\" width=\"100%\" height=\"400\" allowfullscreen></iframe>"
@@ -87,7 +86,6 @@ module Onebox
       #     </div>
       #   HTML
       # end
-
     end
   end
 end

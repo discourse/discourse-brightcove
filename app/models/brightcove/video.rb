@@ -7,11 +7,17 @@ module Brightcove
 
     belongs_to :user
 
-    validates :state, inclusion: { in: %w(pending ready errored),
-                                   message: "%{value} is not a valid state" }
+    validates :state,
+              inclusion: {
+                in: %w[pending ready errored],
+                message: "%{value} is not a valid state",
+              }
 
     def post_custom_fields
-      PostCustomField.where(name: Brightcove::POST_CUSTOM_FIELD_NAME).where("value LIKE ?", "#{self.video_id}%")
+      PostCustomField.where(name: Brightcove::POST_CUSTOM_FIELD_NAME).where(
+        "value LIKE ?",
+        "#{self.video_id}%",
+      )
     end
 
     def post_custom_field_value
@@ -23,11 +29,10 @@ module Brightcove
     end
 
     def publish_change_to_clients!
-      Post.find(post_custom_fields.pluck(:post_id)).each do |post|
-        post.publish_change_to_clients!(:brightcove_video_changed)
-      end
+      Post
+        .find(post_custom_fields.pluck(:post_id))
+        .each { |post| post.publish_change_to_clients!(:brightcove_video_changed) }
     end
-
   end
 end
 
