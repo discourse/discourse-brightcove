@@ -4,7 +4,6 @@ import { renderIcon } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
 import { next } from "@ember/runloop";
 import getURL from "discourse-common/lib/get-url";
-import bootbox from "bootbox";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
@@ -113,7 +112,8 @@ function initializeBrightcove(api) {
             file,
           });
         } else {
-          bootbox.alert(
+          const dialog = api.container.lookup("service:dialog");
+          dialog.alert(
             I18n.t("brightcove.not_allowed", {
               trust_level: siteSettings.brightcove_min_trust_level,
               trust_level_description: site.trustLevels
