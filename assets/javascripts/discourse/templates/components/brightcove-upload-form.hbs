@@ -23,7 +23,7 @@
 
   <h3>{{i18n "brightcove.title"}}</h3>
   <p>
-    {{input value=videoName disabled=uploading}}
+    <Input @value={{videoName}} @disabled={{uploading}} />
   </p>
 
   {{#if uploading}}
