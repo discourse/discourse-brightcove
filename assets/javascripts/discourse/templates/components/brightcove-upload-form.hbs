@@ -1,8 +1,8 @@
-{{#d-modal-body
-  title="brightcove.modal_title"
-  subtitle="brightcove.modal_subtitle"
+<DModalBody
+  @title="brightcove.modal_title"
+  @subtitle="brightcove.modal_subtitle"
   class="brightcove-upload-modal"
-}}
+>
   <h3>{{i18n "brightcove.file"}}</h3>
   <p>
     {{#if file}}{{fileName}} ({{fileSize}}){{/if}}
@@ -29,11 +29,11 @@
   {{#if uploading}}
     {{uploadProgress}}
   {{else}}
-    {{d-button
-      action="upload"
-      icon="upload"
-      label="upload"
-      disabled=uploadDisabled
-    }}
+    <DButton
+      @action="upload"
+      @icon="upload"
+      @label="upload"
+      @disabled={{uploadDisabled}}
+    />
   {{/if}}
-{{/d-modal-body}}
+</DModalBody>
