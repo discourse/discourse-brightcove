@@ -12,18 +12,18 @@
       title={{i18n "brightcove.select_file"}}
     >
       {{d-icon "film"}}&nbsp;{{i18n "brightcove.select_file"}}
-      <input
+      <Input
         disabled={{uploading}}
-        type="file"
+        @type="file"
         style="visibility: hidden; position: absolute;"
-        onchange={{action "fileChanged"}}
+        {{on "change" (action "fileChanged")}}
       />
     </label>
   </p>
 
   <h3>{{i18n "brightcove.title"}}</h3>
   <p>
-    <Input @value={{videoName}} @disabled={{uploading}} />
+    <Input @value={{videoName}} disabled={{uploading}} />
   </p>
 
   {{#if uploading}}
