@@ -12,9 +12,9 @@
       title={{i18n "brightcove.select_file"}}
     >
       {{d-icon "film"}}&nbsp;{{i18n "brightcove.select_file"}}
-      <Input
+      <input
         disabled={{uploading}}
-        @type="file"
+        type="file"
         style="visibility: hidden; position: absolute;"
         {{on "change" (action "fileChanged")}}
       />
