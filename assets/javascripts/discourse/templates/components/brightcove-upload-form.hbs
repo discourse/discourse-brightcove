@@ -16,14 +16,14 @@
         disabled={{uploading}}
         type="file"
         style="visibility: hidden; position: absolute;"
-        onchange={{action "fileChanged"}}
+        {{on "change" (action "fileChanged")}}
       />
     </label>
   </p>
 
   <h3>{{i18n "brightcove.title"}}</h3>
   <p>
-    {{input value=videoName disabled=uploading}}
+    <Input @value={{videoName}} disabled={{uploading}} />
   </p>
 
   {{#if uploading}}
