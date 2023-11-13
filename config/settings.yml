@@ -1,4 +1,4 @@
-plugins:
+discourse_brightcove:
   brightcove_enabled:
     default: false
     client: true
