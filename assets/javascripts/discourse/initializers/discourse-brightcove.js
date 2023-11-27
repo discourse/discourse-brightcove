@@ -1,9 +1,9 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import showModal from "discourse/lib/show-modal";
 import { renderIcon } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
 import { next } from "@ember/runloop";
 import getURL from "discourse-common/lib/get-url";
+import BrightcoveUpload from "../components/modal/brightcove-upload";
 
 function initializeBrightcove(api) {
   const siteSettings = api.container.lookup("site-settings:main");
@@ -108,9 +108,9 @@ function initializeBrightcove(api) {
           user.trust_level >= siteSettings.brightcove_min_trust_level ||
           user.staff
         ) {
-          showModal("brightcove-upload-modal").setProperties({
-            file,
-          });
+          api.container
+            .lookup("service:modal")
+            .show(BrightcoveUpload, { model: { file } });
         } else {
           const dialog = api.container.lookup("service:dialog");
           dialog.alert(
@@ -138,7 +138,7 @@ function initializeBrightcove(api) {
         icon: "film",
         title: "brightcove.upload_toolbar_title",
         perform: () => {
-          showModal("brightcove-upload-modal");
+          api.container.lookup("service:modal").show(BrightcoveUpload);
         },
       });
     }

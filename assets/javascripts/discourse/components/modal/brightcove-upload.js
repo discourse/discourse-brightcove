@@ -10,6 +10,11 @@ const SparkMD5 = window.SparkMD5;
 export default Component.extend({
   file: null,
 
+  init() {
+    this._super(...arguments);
+    this.set("file", this.model?.file);
+  },
+
   @discourseComputed("file")
   fileName(file) {
     return file.name;
@@ -139,7 +144,7 @@ export default Component.extend({
       "composer:insert-text",
       `[video=${videoInfo["video_id"]}]`
     );
-    this.sendAction("closeModal");
+    this.closeModal();
   },
 
   @discourseComputed("file", "videoName")
