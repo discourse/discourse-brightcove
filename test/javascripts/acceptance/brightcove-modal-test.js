@@ -8,7 +8,7 @@ acceptance("Discourse Brightcove | upload modal", function (needs) {
     brightcove_enabled: true,
   });
 
-  test("can display modal", async (assert) => {
+  test("can display modal", async function (assert) {
     await visit("/new-topic?category_id=1");
     await click(".d-editor-button-bar .brightcove-upload");
     assert.dom(".d-modal.brightcove-upload-modal").exists();
