@@ -62,9 +62,7 @@ end
 
 Discourse::Application.routes.append { mount ::Brightcove::Engine, at: "/brightcove" }
 
-require "onebox"
-
-module Onebox
+module ::Onebox
   module Engine
     class BrightcoveOnebox
       include Engine
