@@ -29,7 +29,7 @@ module Jobs
         SQL
       orphaned_videos.update_all(tombstoned_at: Time.zone.now)
 
-      # Untombstone any videos which now have associated posts
+      # Un-tombstone any videos which now have associated posts
       restorable_videos =
         Brightcove::Video.where("tombstoned_at IS NOT NULL").where(
           <<~SQL,
@@ -51,7 +51,7 @@ module Jobs
           if e.status == 429
             # Rate limit, stop and run the job later
             Jobs.enqueue_in(1.minute, :clean_up_brightcove_videos)
-            return
+            break
           end
         end
       end
