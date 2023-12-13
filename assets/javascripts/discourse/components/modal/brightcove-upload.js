@@ -1,7 +1,7 @@
-import discourseComputed from "discourse-common/utils/decorators";
+import Component from "@ember/component";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import Component from "@ember/component";
+import discourseComputed from "discourse-common/utils/decorators";
 import I18n from "I18n";
 
 const Evaporate = window.Evaporate;

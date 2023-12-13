@@ -4,7 +4,6 @@
 # version: 0.1
 # authors: David Taylor
 # url: https://github.com/discourse/discourse-brightcove
-# transpile_js: true
 
 enabled_site_setting :brightcove_enabled
 register_asset "stylesheets/brightcove.scss"
@@ -50,6 +49,7 @@ after_initialize do
     return @user.has_trust_level?(SiteSetting.brightcove_min_trust_level)
   end
 end
+
 module ::Brightcove
   PLUGIN_NAME = "discourse-brightcove"
   POST_CUSTOM_FIELD_NAME = "brightcove_video"
@@ -62,9 +62,7 @@ end
 
 Discourse::Application.routes.append { mount ::Brightcove::Engine, at: "/brightcove" }
 
-Onebox = Onebox
-
-module Onebox
+module ::Onebox
   module Engine
     class BrightcoveOnebox
       include Engine

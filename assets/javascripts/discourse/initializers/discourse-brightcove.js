@@ -1,8 +1,9 @@
+import { next } from "@ember/runloop";
+import $ from "jquery";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import getURL from "discourse-common/lib/get-url";
 import { renderIcon } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
-import { next } from "@ember/runloop";
-import getURL from "discourse-common/lib/get-url";
 import BrightcoveUpload from "../components/modal/brightcove-upload";
 
 function initializeBrightcove(api) {
