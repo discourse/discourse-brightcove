@@ -7,8 +7,8 @@ import I18n from "I18n";
 import BrightcoveUpload from "../components/modal/brightcove-upload";
 
 function initializeBrightcove(api) {
-  const siteSettings = api.container.lookup("site-settings:main");
-  const site = api.container.lookup("site:main");
+  const siteSettings = api.container.lookup("service:site-settings");
+  const site = api.container.lookup("service:site");
 
   function renderVideo($container, video_id) {
     $container.removeAttr("data-video-id");
@@ -150,7 +150,7 @@ export default {
   name: "discourse-brightcove",
 
   initialize(container) {
-    const siteSettings = container.lookup("site-settings:main");
+    const siteSettings = container.lookup("service:site-settings");
     if (siteSettings.brightcove_enabled) {
       withPluginApi("0.8.24", initializeBrightcove);
     }
