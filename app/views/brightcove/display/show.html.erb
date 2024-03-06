@@ -17,6 +17,6 @@
     data-application-id="<%= SiteSetting.brightcove_application_id %>"
     class="video-js"
     controls></video>
-    <script src="//players.brightcove.net/<%= SiteSetting.brightcove_account_id %>/<%= SiteSetting.brightcove_player %>_<%= SiteSetting.brightcove_embed %>/index.min.js"></script>
+    <script src="//players.brightcove.net/<%= SiteSetting.brightcove_account_id %>/<%= SiteSetting.brightcove_player %>_<%= SiteSetting.brightcove_embed %>/index.min.js" nonce="<%= csp_nonce_placeholder %>"></script>
 </body>
 </html>
