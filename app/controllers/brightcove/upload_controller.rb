@@ -33,7 +33,7 @@ module Brightcove
             user: current_user,
           )
         begin
-          unless SiteSetting.brightcove_folder_id.blank?
+          if SiteSetting.brightcove_folder_id.present?
             api.move_to_folder(SiteSetting.brightcove_folder_id)
           end
           ingest_info = api.get_ingest_url(filename)
