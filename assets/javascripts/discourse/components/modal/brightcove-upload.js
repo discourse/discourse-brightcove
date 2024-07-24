@@ -1,4 +1,5 @@
 import Component from "@ember/component";
+import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import discourseComputed from "discourse-common/utils/decorators";
@@ -152,17 +153,17 @@ export default Component.extend({
     return !(file && videoName);
   },
 
-  actions: {
-    fileChanged(event) {
-      // eslint-disable-next-line no-console
-      console.log("File Changed", event.target.files[0]);
-      const file = event.target.files[0];
-      this.set("file", file);
-    },
+  @action
+  fileChanged(event) {
+    // eslint-disable-next-line no-console
+    console.log("File Changed", event.target.files[0]);
+    const file = event.target.files[0];
+    this.set("file", file);
+  },
 
-    upload() {
-      this.createVideoObject();
-    },
+  @action
+  upload() {
+    this.createVideoObject();
   },
 });
 
