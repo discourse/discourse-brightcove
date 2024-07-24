@@ -31,7 +31,7 @@
     {{uploadProgress}}
   {{else}}
     <DButton
-      @action="upload"
+      @action={{this.upload}}
       @icon="upload"
       @label="upload"
       @disabled={{uploadDisabled}}
