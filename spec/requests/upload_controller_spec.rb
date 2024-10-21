@@ -79,8 +79,6 @@ RSpec.describe Brightcove::UploadController do
     context "with rate limiter" do
       before { RateLimiter.enable }
 
-      use_redis_snapshotting
-
       it "rate limits creation" do
         SiteSetting.brightcove_uploads_per_day_per_user = 1
 
