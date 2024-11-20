@@ -6,15 +6,15 @@
 >
   <h3>{{i18n "brightcove.file"}}</h3>
   <p>
-    {{#if file}}{{fileName}} ({{fileSize}}){{/if}}
+    {{#if this.file}}{{this.fileName}} ({{this.fileSize}}){{/if}}
     <label
       class="btn"
-      disabled={{uploading}}
+      disabled={{this.uploading}}
       title={{i18n "brightcove.select_file"}}
     >
       {{d-icon "film"}}&nbsp;{{i18n "brightcove.select_file"}}
       <input
-        disabled={{uploading}}
+        disabled={{this.uploading}}
         type="file"
         style="visibility: hidden; position: absolute;"
         {{on "change" (action "fileChanged")}}
@@ -24,17 +24,17 @@
 
   <h3>{{i18n "brightcove.title"}}</h3>
   <p>
-    <Input @value={{videoName}} disabled={{uploading}} />
+    <Input @value={{this.videoName}} disabled={{this.uploading}} />
   </p>
 
-  {{#if uploading}}
-    {{uploadProgress}}
+  {{#if this.uploading}}
+    {{this.uploadProgress}}
   {{else}}
     <DButton
       @action={{this.upload}}
       @icon="upload"
       @label="upload"
-      @disabled={{uploadDisabled}}
+      @disabled={{this.uploadDisabled}}
     />
   {{/if}}
 </DModal>
