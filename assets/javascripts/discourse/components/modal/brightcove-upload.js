@@ -8,23 +8,23 @@ import I18n from "I18n";
 const Evaporate = window.Evaporate;
 const SparkMD5 = window.SparkMD5;
 
-export default Component.extend({
-  file: null,
+export default class BrightcoveUpload extends Component {
+  file = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.set("file", this.model?.file);
-  },
+  }
 
   @discourseComputed("file")
   fileName(file) {
     return file.name;
-  },
+  }
 
   @discourseComputed("file")
   fileSize(file) {
     return this.humanFilesize(file.size);
-  },
+  }
 
   humanFilesize(size) {
     const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
@@ -33,14 +33,14 @@ export default Component.extend({
       " " +
       ["B", "kB", "MB", "GB", "TB"][i]
     );
-  },
+  }
 
   setProgress(key, args) {
     this.set(
       "uploadProgress",
       I18n.t(`brightcove.upload_progress.${key}`, args)
     );
-  },
+  }
 
   createVideoObject() {
     this.set("uploading", true);
@@ -58,7 +58,7 @@ export default Component.extend({
         this.setProgress("error");
         popupAjaxError(reason);
       });
-  },
+  }
 
   setupEvaporate(videoInfo) {
     this.setProgress("starting");
@@ -87,7 +87,7 @@ export default Component.extend({
         console.error("Brightcove failed to initialize. Reason: ", reason);
         this.setProgress("error");
       });
-  },
+  }
 
   startEvaporateUpload(evaporate) {
     this.setProgress("uploading");
@@ -120,7 +120,7 @@ export default Component.extend({
         console.error("Brightcove upload failed. Reason: ", reason);
         this.setProgress("error");
       });
-  },
+  }
 
   ingestVideo() {
     this.setProgress("finishing");
@@ -136,7 +136,7 @@ export default Component.extend({
         console.error("Failed to ingest. Reason: ", error);
         this.setProgress("error");
       });
-  },
+  }
 
   ingestComplete() {
     const videoInfo = this.get("videoInfo");
@@ -146,12 +146,12 @@ export default Component.extend({
       `[video=${videoInfo["video_id"]}]`
     );
     this.closeModal();
-  },
+  }
 
   @discourseComputed("file", "videoName")
   uploadDisabled(file, videoName) {
     return !(file && videoName);
-  },
+  }
 
   @action
   fileChanged(event) {
@@ -159,13 +159,13 @@ export default Component.extend({
     console.log("File Changed", event.target.files[0]);
     const file = event.target.files[0];
     this.set("file", file);
-  },
+  }
 
   @action
   upload() {
     this.createVideoObject();
-  },
-});
+  }
+}
 
 // SHA256 algorithm from https://github.com/jbt/js-crypto/blob/master/sha256.js
 /*eslint-disable */
