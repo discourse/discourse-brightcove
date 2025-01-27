@@ -25,11 +25,11 @@ function initializeBrightcove(api) {
       string: I18n.t("brightcove.state.pending"),
     },
     errored: {
-      iconHtml: renderIcon("string", "exclamation-triangle"),
+      iconHtml: renderIcon("string", "triangle-exclamation"),
       string: I18n.t("brightcove.state.errored"),
     },
     unknown: {
-      iconHtml: renderIcon("string", "question-circle"),
+      iconHtml: renderIcon("string", "circle-question"),
       string: I18n.t("brightcove.state.unknown"),
     },
   };
