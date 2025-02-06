@@ -1,9 +1,9 @@
 import { next } from "@ember/runloop";
 import $ from "jquery";
+import getURL from "discourse/lib/get-url";
+import { renderIcon } from "discourse/lib/icon-library";
 import { withPluginApi } from "discourse/lib/plugin-api";
-import getURL from "discourse-common/lib/get-url";
-import { renderIcon } from "discourse-common/lib/icon-library";
-import I18n from "I18n";
+import { i18n } from "discourse-i18n";
 import BrightcoveUpload from "../components/modal/brightcove-upload";
 
 function initializeBrightcove(api) {
@@ -22,15 +22,15 @@ function initializeBrightcove(api) {
   const placeholders = {
     pending: {
       iconHtml: "<div class='spinner'></div>",
-      string: I18n.t("brightcove.state.pending"),
+      string: i18n("brightcove.state.pending"),
     },
     errored: {
       iconHtml: renderIcon("string", "triangle-exclamation"),
-      string: I18n.t("brightcove.state.errored"),
+      string: i18n("brightcove.state.errored"),
     },
     unknown: {
       iconHtml: renderIcon("string", "circle-question"),
-      string: I18n.t("brightcove.state.unknown"),
+      string: i18n("brightcove.state.unknown"),
     },
   };
 
@@ -115,7 +115,7 @@ function initializeBrightcove(api) {
         } else {
           const dialog = api.container.lookup("service:dialog");
           dialog.alert(
-            I18n.t("brightcove.not_allowed", {
+            i18n("brightcove.not_allowed", {
               trust_level: siteSettings.brightcove_min_trust_level,
               trust_level_description: site.trustLevels
                 .findBy("id", siteSettings.brightcove_min_trust_level)

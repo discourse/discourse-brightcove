@@ -2,8 +2,8 @@ import Component from "@ember/component";
 import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import discourseComputed from "discourse-common/utils/decorators";
-import I18n from "I18n";
+import discourseComputed from "discourse/lib/decorators";
+import { i18n } from "discourse-i18n";
 
 const Evaporate = window.Evaporate;
 const SparkMD5 = window.SparkMD5;
@@ -36,10 +36,7 @@ export default class BrightcoveUpload extends Component {
   }
 
   setProgress(key, args) {
-    this.set(
-      "uploadProgress",
-      I18n.t(`brightcove.upload_progress.${key}`, args)
-    );
+    this.set("uploadProgress", i18n(`brightcove.upload_progress.${key}`, args));
   }
 
   createVideoObject() {
