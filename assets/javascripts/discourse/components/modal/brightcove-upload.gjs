@@ -1,5 +1,9 @@
-import Component from "@ember/component";
+import Component, { Input } from "@ember/component";
+import { on } from "@ember/modifier";
 import { action } from "@ember/object";
+import DButton from "discourse/components/d-button";
+import DModal from "discourse/components/d-modal";
+import icon from "discourse/helpers/d-icon";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import discourseComputed from "discourse/lib/decorators";
@@ -162,6 +166,49 @@ export default class BrightcoveUpload extends Component {
   upload() {
     this.createVideoObject();
   }
+
+  <template>
+    <DModal
+      @title={{i18n "brightcove.modal_title"}}
+      @subtitle={{i18n "brightcove.modal_subtitle"}}
+      class="brightcove-upload-modal"
+      @closeModal={{@closeModal}}
+    >
+      <h3>{{i18n "brightcove.file"}}</h3>
+      <p>
+        {{#if this.file}}{{this.fileName}} ({{this.fileSize}}){{/if}}
+        <label
+          class="btn"
+          disabled={{this.uploading}}
+          title={{i18n "brightcove.select_file"}}
+        >
+          {{icon "film"}}&nbsp;{{i18n "brightcove.select_file"}}
+          <input
+            disabled={{this.uploading}}
+            type="file"
+            style="visibility: hidden; position: absolute;"
+            {{on "change" (action "fileChanged")}}
+          />
+        </label>
+      </p>
+
+      <h3>{{i18n "brightcove.title"}}</h3>
+      <p>
+        <Input @value={{this.videoName}} disabled={{this.uploading}} />
+      </p>
+
+      {{#if this.uploading}}
+        {{this.uploadProgress}}
+      {{else}}
+        <DButton
+          @action={{this.upload}}
+          @icon="upload"
+          @label="upload"
+          @disabled={{this.uploadDisabled}}
+        />
+      {{/if}}
+    </DModal>
+  </template>
 }
 
 // SHA256 algorithm from https://github.com/jbt/js-crypto/blob/master/sha256.js
