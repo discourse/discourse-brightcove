@@ -187,7 +187,7 @@ export default class BrightcoveUpload extends Component {
             disabled={{this.uploading}}
             type="file"
             style="visibility: hidden; position: absolute;"
-            {{on "change" (action "fileChanged")}}
+            {{on "change" this.fileChanged}}
           />
         </label>
       </p>
