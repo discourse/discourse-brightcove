@@ -178,7 +178,7 @@ export default class BrightcoveUpload extends Component {
       <p>
         {{#if this.file}}{{this.fileName}} ({{this.fileSize}}){{/if}}
         <label
-          class="btn"
+          class="btn btn-default"
           disabled={{this.uploading}}
           title={{i18n "brightcove.select_file"}}
         >
@@ -205,6 +205,7 @@ export default class BrightcoveUpload extends Component {
           @icon="upload"
           @label="upload"
           @disabled={{this.uploadDisabled}}
+          class="btn-default"
         />
       {{/if}}
     </DModal>
