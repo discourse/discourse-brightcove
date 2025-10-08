@@ -152,7 +152,7 @@ export default {
   initialize(container) {
     const siteSettings = container.lookup("service:site-settings");
     if (siteSettings.brightcove_enabled) {
-      withPluginApi("0.8.24", initializeBrightcove);
+      withPluginApi(initializeBrightcove);
     }
   },
 };
