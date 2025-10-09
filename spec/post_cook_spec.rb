@@ -5,7 +5,7 @@ describe CookedPostProcessor do
   before { SiteSetting.brightcove_enabled = true }
 
   let(:post) do
-    raw = <<-RAW.strip_heredoc
+    raw = <<~RAW
     [video=1234]
     [video=12345]
     [video=123456]
