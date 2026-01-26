@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require "rails_helper"
 
 describe CookedPostProcessor do
   before { SiteSetting.brightcove_enabled = true }

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require "rails_helper"
 
 RSpec.describe Brightcove::UploadController do
   let!(:auth_stub) do
