@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require "rails_helper"
 
 describe Brightcove::Video do
   it "updates and publishes changes correctly" do
