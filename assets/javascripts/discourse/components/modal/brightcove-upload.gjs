@@ -1,12 +1,12 @@
+/* eslint-disable ember/no-classic-components, ember/require-tagless-components */
 import Component, { Input } from "@ember/component";
 import { on } from "@ember/modifier";
-import { action } from "@ember/object";
+import { action, computed } from "@ember/object";
 import DButton from "discourse/components/d-button";
 import DModal from "discourse/components/d-modal";
 import icon from "discourse/helpers/d-icon";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import discourseComputed from "discourse/lib/decorators";
 import { i18n } from "discourse-i18n";
 
 const Evaporate = window.Evaporate;
@@ -20,14 +20,14 @@ export default class BrightcoveUpload extends Component {
     this.set("file", this.model?.file);
   }
 
-  @discourseComputed("file")
-  fileName(file) {
-    return file.name;
+  @computed("file")
+  get fileName() {
+    return this.file.name;
   }
 
-  @discourseComputed("file")
-  fileSize(file) {
-    return this.humanFilesize(file.size);
+  @computed("file")
+  get fileSize() {
+    return this.humanFilesize(this.file.size);
   }
 
   humanFilesize(size) {
@@ -149,9 +149,9 @@ export default class BrightcoveUpload extends Component {
     this.closeModal();
   }
 
-  @discourseComputed("file", "videoName")
-  uploadDisabled(file, videoName) {
-    return !(file && videoName);
+  @computed("file", "videoName")
+  get uploadDisabled() {
+    return !(this.file && this.videoName);
   }
 
   @action

@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-jquery */
 import { next } from "@ember/runloop";
 import $ from "jquery";
 import getURL from "discourse/lib/get-url";
