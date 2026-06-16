@@ -58,8 +58,8 @@ module Brightcove
       to_sign = params.require(:to_sign)
       datetime = params.require(:datetime)
 
-      video = Brightcove::Video.find_by_video_id(video_id)
-      raise Discourse::NotFound if video.nil? || video.secret_access_key.nil?
+      video = find_current_user_video(video_id)
+      raise Discourse::NotFound if video.secret_access_key.nil?
 
       secret = video.secret_access_key
       aws_region = "us-east-1"
@@ -77,8 +77,10 @@ module Brightcove
     def ingest
       video_id = params.require(:video_id)
 
-      video = Brightcove::Video.find_by_video_id(video_id)
-      raise Discourse::NotFound if video.nil? || video.api_request_url.nil?
+      video = find_current_user_video(video_id)
+      if video.api_request_url.nil? || video.state != Brightcove::Video::PENDING
+        raise Discourse::NotFound
+      end
 
       video.callback_key = SecureRandom.hex
       video.save!
@@ -118,6 +120,13 @@ module Brightcove
     end
 
     private
+
+    def find_current_user_video(video_id)
+      video = Brightcove::Video.find_by(video_id: video_id, user: current_user)
+      raise Discourse::NotFound if video.nil?
+
+      video
+    end
 
     def hmac(key, value)
       OpenSSL::HMAC.digest(OpenSSL::Digest.new("sha256"), key, value)
