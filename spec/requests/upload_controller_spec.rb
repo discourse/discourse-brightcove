@@ -49,7 +49,8 @@ RSpec.describe Brightcove::UploadController do
     SiteSetting.brightcove_client_secret = "abc"
   end
 
-  let(:user) { Fabricate(:user) }
+  fab!(:user)
+  fab!(:other_user, :user)
 
   it "doesn't allow anon" do
     post "/brightcove/create.json", params: { name: "Test Name", filename: "filename.mp4" }
@@ -90,7 +91,12 @@ RSpec.describe Brightcove::UploadController do
     end
 
     it "allows signing" do
-      v = Brightcove::Video.create!(video_id: 12, secret_access_key: "abcd", state: "pending")
+      Brightcove::Video.create!(
+        video_id: 12,
+        secret_access_key: "abcd",
+        state: "pending",
+        user: user,
+      )
       get "/brightcove/sign/12.json",
           params: {
             to_sign: "some string",
@@ -103,17 +109,63 @@ RSpec.describe Brightcove::UploadController do
     end
 
     it "allows ingest" do
-      v =
-        Brightcove::Video.create!(
-          video_id: "12",
-          secret_access_key: "abcd",
-          state: "pending",
-          api_request_url: "https://hello.world/video.mp4",
-        )
+      Brightcove::Video.create!(
+        video_id: "12",
+        secret_access_key: "abcd",
+        state: "pending",
+        api_request_url: "https://hello.world/video.mp4",
+        user: user,
+      )
       post "/brightcove/ingest/12.json"
       expect(response.status).to eq(200)
       json = ::JSON.parse(response.body)
       expect(json["success"]).to eq("OK")
+    end
+
+    it "prevents uploaders from using videos they do not own or ingesting completed videos" do
+      Brightcove::Video.create!(
+        video_id: "12",
+        secret_access_key: "other-secret",
+        state: "pending",
+        api_request_url: "https://hello.world/other.mp4",
+        user: other_user,
+      )
+      Brightcove::Video.create!(
+        video_id: "13",
+        secret_access_key: "own-secret",
+        state: "ready",
+        api_request_url: "https://hello.world/ready.mp4",
+        user: user,
+      )
+      ready_ingest_request_stub =
+        stub_request(
+          :post,
+          "https://ingest.api.brightcove.com/v1/accounts/987654321/videos/13/ingest-requests",
+        ).to_return(status: 204)
+
+      get "/brightcove/sign/12.json",
+          params: {
+            to_sign: "some string",
+            datetime: "20180512T12:00Z",
+          }
+      sign_response = { status: response.status, body: response.body }
+
+      post "/brightcove/ingest/12.json"
+      other_ingest_response = { status: response.status, body: response.body }
+
+      post "/brightcove/ingest/13.json"
+      ready_ingest_response = { status: response.status, body: response.body }
+
+      aggregate_failures do
+        expect(sign_response[:status]).to eq(404)
+        expect(sign_response[:body]).to include("errors")
+        expect(other_ingest_response[:status]).to eq(404)
+        expect(other_ingest_response[:body]).to include("errors")
+        expect(ready_ingest_response[:status]).to eq(404)
+        expect(ready_ingest_response[:body]).to include("errors")
+        expect(ingest_request_stub).not_to have_been_requested
+        expect(ready_ingest_request_stub).not_to have_been_requested
+      end
     end
   end
 
