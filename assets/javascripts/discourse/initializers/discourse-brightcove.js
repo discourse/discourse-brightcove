@@ -119,7 +119,7 @@ function initializeBrightcove(api) {
             i18n("brightcove.not_allowed", {
               trust_level: siteSettings.brightcove_min_trust_level,
               trust_level_description: site.trustLevels
-                .findBy("id", siteSettings.brightcove_min_trust_level)
+                .find((tl) => tl.id === siteSettings.brightcove_min_trust_level)
                 .get("name"),
             })
           );
